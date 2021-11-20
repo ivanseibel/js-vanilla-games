@@ -27,11 +27,32 @@ const layoutPage = () => {
   playingArea.style.height = playingAreaHeight + 'px';
 }
 
+const keyListener = (e) => {
+  const keyCode = e.keyCode;
+  if ((keyCode === 37 || keyCode === 65) && paddleLeft > 0) {
+    paddleLeft -= paddleSpeed;
+
+    if (paddleLeft < 0) {
+      paddleLeft = 0;
+    }
+  } else if ((keyCode === 39 || keyCode === 68) && paddleLeft < playingAreaWidth - 64) {
+    paddleLeft += paddleSpeed;
+
+    if (paddleLeft > playingAreaWidth - 64) {
+      paddleLeft = playingAreaWidth - 64;
+    }
+  }
+
+  paddle.style.left = paddleLeft + 'px';
+}
+
 const init = () => {
   playingArea = document.querySelector('#playingArea');
   paddle = document.querySelector('#paddle');
   ball = document.querySelector('#ball');
   score = document.querySelector('#score');
+
+  document.addEventListener('keydown', keyListener, false);
 
   layoutPage();
 }
