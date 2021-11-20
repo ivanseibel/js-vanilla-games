@@ -46,6 +46,83 @@ const keyListener = (e) => {
   paddle.style.left = paddleLeft + 'px';
 }
 
+const moveBall = () => {
+  ballLeft += horizontalSpeed;
+  ballTop += verticalSpeed;
+  ball.style.left = ballLeft + 'px';
+  ball.style.top = ballTop + 'px';
+}
+
+const updateScore = () => {
+  currentsScore += 5;
+  score.innerHTML = `Score: ${currentsScore}`;
+}
+
+const render = () => {
+  moveBall();
+  updateScore();
+}
+
+const collisionX = () => {
+  if (ballLeft < 4 || ballLeft > playingAreaWidth - 20) {
+    return true;
+  }
+
+  return false;
+}
+
+const collisionY = () => {
+  if (ballTop < 4) {
+    return true;
+  }
+
+  if (ballTop > playingAreaHeight - 64) {
+    if (ballLeft >= paddleLeft && ballLeft <= paddleLeft + 64) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+
+const detectCollision = () => {
+  if (collisionX()) {
+    horizontalSpeed *= -1;
+  }
+  if (collisionY()) {
+    verticalSpeed *= -1;
+  }
+}
+
+const difficulty = () => {
+  if (currentsScore % 1000 === 0) {
+    if (verticalSpeed > 0) {
+      verticalSpeed += 2;
+    } else {
+      verticalSpeed -= 2;
+    }
+  }
+}
+
+const gameOver = () => {
+  cancelAnimationFrame(timer);
+  score.innerHTML = `Score: ${currentsScore}   Game Over!`;
+  score.style.backgroundColor = 'rgb(128,0,0)';
+}
+
+const start = () => {
+  render();
+  detectCollision();
+  difficulty();
+
+  if (ballTop < playingAreaHeight - 32) {
+    timer = requestAnimationFrame(start);
+  } else {
+    gameOver();
+  }
+}
+
 const init = () => {
   playingArea = document.querySelector('#playingArea');
   paddle = document.querySelector('#paddle');
@@ -55,6 +132,8 @@ const init = () => {
   document.addEventListener('keydown', keyListener, false);
 
   layoutPage();
+
+  timer = requestAnimationFrame(start);
 }
 
 window.onload = init;
