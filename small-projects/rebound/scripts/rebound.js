@@ -16,15 +16,25 @@ var paddleLeft = 228;
 var ballLeft = 100;
 var ballTop = 8;
 
+const layoutPage = () => {
+  availableWidth = window.innerWidth;
+  availableHeight = window.innerHeight;
+
+  playingAreaWidth = availableWidth - 22;
+  playingAreaHeight = availableHeight - 22;
+
+  playingArea.style.width = playingAreaWidth + 'px';
+  playingArea.style.height = playingAreaHeight + 'px';
+}
+
 const init = () => {
   playingArea = document.querySelector('#playingArea');
   paddle = document.querySelector('#paddle');
   ball = document.querySelector('#ball');
   score = document.querySelector('#score');
 
-  playingArea.style.width = 'calc(100vw - 20px)';
-  playingArea.style.height = 'calc(100vh - 20px)';
-
+  layoutPage();
 }
 
 window.onload = init;
+window.onresize = layoutPage;
