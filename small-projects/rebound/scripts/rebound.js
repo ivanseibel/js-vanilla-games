@@ -79,7 +79,23 @@ const collisionY = () => {
   }
 
   if (ballTop > playingAreaHeight - 64) {
-    if (ballLeft >= paddleLeft && ballLeft <= paddleLeft + 64) {
+    if (ballLeft >= paddleLeft + 16 && ballLeft <= paddleLeft + 48) {
+      if (horizontalSpeed < 0)
+        horizontalSpeed = -2;
+      else
+        horizontalSpeed = 2;
+      return true;
+    } else if (ballLeft >= paddleLeft && ballLeft < paddleLeft + 16) {
+      if (horizontalSpeed < 0)
+        horizontalSpeed = -8;
+      else
+        horizontalSpeed = 8;
+      return true;
+    } else if (ballLeft > paddleLeft + 48 && ballLeft <= paddleLeft + 64) {
+      if (horizontalSpeed < 0)
+        horizontalSpeed = -8;
+      else
+        horizontalSpeed = 8;
       return true;
     }
   }
