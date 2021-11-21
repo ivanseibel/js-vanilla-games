@@ -16,6 +16,8 @@ var paddleLeft = 228;
 var ballLeft = 100;
 var ballTop = 8;
 
+var isDragging = false;
+
 const layoutPage = () => {
   availableWidth = window.innerWidth;
   availableHeight = window.innerHeight;
@@ -123,6 +125,29 @@ const start = () => {
   }
 }
 
+const mouseDown = (e) => {
+  isDragging = true;
+}
+
+const mouseMove = (e) => {
+  if (isDragging) {
+    e.preventDefault();
+    paddleLeft = e.clientX - 32 || e.targetTouches[0].pageX - 32;
+
+    if (paddleLeft < 0) {
+      paddleLeft = 0;
+    } else if (paddleLeft > playingAreaWidth - 64) {
+      paddleLeft = playingAreaWidth - 64;
+    }
+
+    paddle.style.left = paddleLeft + 'px';
+  }
+}
+
+const mouseUp = (e) => {
+  isDragging = false;
+}
+
 const init = () => {
   playingArea = document.querySelector('#playingArea');
   paddle = document.querySelector('#paddle');
@@ -130,6 +155,14 @@ const init = () => {
   score = document.querySelector('#score');
 
   document.addEventListener('keydown', keyListener, false);
+
+  playingArea.addEventListener('mousedown', mouseDown, false);
+  playingArea.addEventListener('mousemove', mouseMove, false);
+  playingArea.addEventListener('mouseup', mouseUp, false);
+
+  playingArea.addEventListener('touchstart', mouseDown, false);
+  playingArea.addEventListener('touchmove', mouseMove, false);
+  playingArea.addEventListener('touchend', mouseUp, false);
 
   layoutPage();
 
