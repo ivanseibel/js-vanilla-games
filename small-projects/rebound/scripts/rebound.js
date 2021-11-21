@@ -10,6 +10,17 @@ var controlsScreen;
 var newButton;
 var difficultySelect;
 var doneButton;
+var sound;
+var music;
+
+/*
+  Variables for music elements
+*/
+var beepX;
+var beepY;
+var beepPaddle;
+var beepGameOver;
+var backgroundMusic;
 
 /*
   Variables for game states
@@ -27,6 +38,45 @@ var paddleLeft = 228;
 var ballLeft = 100;
 var ballTop = 8;
 var isDragging = false;
+var effectsEnabled = false;
+var musicEnabled = false;
+
+function initAudio() {
+  // load audio files
+  beepX = new Audio('../assets/sounds/beepX.mp3');
+  beepY = new Audio('../assets/sounds/beepY.mp3');
+  beepPaddle = new Audio('../assets/sounds/beepPaddle.mp3');
+  beepGameOver = new Audio('../assets/sounds/beepGameOver.mp3');
+  backgroundMusic = new Audio('../assets/sounds/music.mp3');
+
+  // turn off volume
+  beepX.volume = 0;
+  beepY.volume = 0;
+  beepPaddle.volume = 0;
+  beepGameOver.volume = 0;
+  backgroundMusic.volume = 0;
+
+  // play each file to grant permission
+  beepX.play();
+  beepY.play();
+  beepPaddle.play();
+  beepGameOver.play();
+  backgroundMusic.play();
+
+  // pause each file to store in memory for later
+  beepX.pause();
+  beepY.pause();
+  beepPaddle.pause();
+  beepGameOver.pause();
+  backgroundMusic.pause();
+
+  // set the volume back for next time
+  beepX.volume = 1;
+  beepY.volume = 1;
+  beepPaddle.volume = 1;
+  beepGameOver.volume = 1;
+  backgroundMusic.volume = 1;
+}
 
 const layoutPage = () => {
   availableWidth = window.innerWidth;
@@ -225,6 +275,8 @@ const init = () => {
   newButton = document.querySelector('#new');
   difficultySelect = document.querySelector('#difficulty');
   doneButton = document.querySelector('#done');
+  sound = document.querySelector('#sound');
+  music = document.querySelector('#music');
 
   document.addEventListener('keydown', keyListener, false);
 
