@@ -1,8 +1,19 @@
+/*
+  Variables for DOM elements
+*/
 var playingArea;
 var paddle;
 var ball;
 var score;
+var gearButton;
+var controlsScreen;
+var newButton;
+var difficultySelect;
+var doneButton;
 
+/*
+  Variables for game states
+*/
 var availableWidth;
 var availableHeight;
 var playingAreaWidth;
@@ -15,7 +26,6 @@ var timer;
 var paddleLeft = 228;
 var ballLeft = 100;
 var ballTop = 8;
-
 var isDragging = false;
 
 const layoutPage = () => {
@@ -79,14 +89,29 @@ const collisionY = () => {
   }
 
   if (ballTop > playingAreaHeight - 64) {
-    if (ballLeft >= paddleLeft && ballLeft <= paddleLeft + 64) {
+    if (ballLeft >= paddleLeft + 16 && ballLeft <= paddleLeft + 48) {
+      if (horizontalSpeed < 0)
+        horizontalSpeed = -2;
+      else
+        horizontalSpeed = 2;
+      return true;
+    } else if (ballLeft >= paddleLeft && ballLeft < paddleLeft + 16) {
+      if (horizontalSpeed < 0)
+        horizontalSpeed = -8;
+      else
+        horizontalSpeed = 8;
+      return true;
+    } else if (ballLeft > paddleLeft + 48 && ballLeft <= paddleLeft + 64) {
+      if (horizontalSpeed < 0)
+        horizontalSpeed = -8;
+      else
+        horizontalSpeed = 8;
       return true;
     }
   }
 
   return false;
 }
-
 
 const detectCollision = () => {
   if (collisionX()) {
@@ -148,11 +173,58 @@ const mouseUp = (e) => {
   isDragging = false;
 }
 
+const showControls = () => {
+  controlsScreen.style.display = 'block';
+  cancelAnimationFrame(timer);
+}
+
+const hideControls = () => {
+  controlsScreen.style.display = 'none';
+  timer = requestAnimationFrame(start);
+}
+
+const setDifficultly = (difficulty) => {
+  switch (difficulty) {
+    case 0:
+      verticalSpeed = 2;
+      paddleSpeed = 48;
+      break;
+
+    case 1:
+      verticalSpeed = 4;
+      paddleSpeed = 32;
+      break;
+
+    case 2:
+      verticalSpeed = 6;
+      paddleSpeed = 16;
+      break;
+
+    default:
+      verticalSpeed = 2;
+      paddleSpeed = 48;
+  }
+}
+
+const newGame = () => {
+  ballTop = 8;
+  currentsScore = 0;
+  horizontalSpeed = 2;
+  setDifficultly(difficultySelect.selectedIndex);
+  score.style.backgroundColor = 'rgb(32,128,64)';
+  hideControls();
+}
+
 const init = () => {
   playingArea = document.querySelector('#playingArea');
   paddle = document.querySelector('#paddle');
   ball = document.querySelector('#ball');
   score = document.querySelector('#score');
+  gearButton = document.querySelector('#gear');
+  controlsScreen = document.querySelector('#controls');
+  newButton = document.querySelector('#new');
+  difficultySelect = document.querySelector('#difficulty');
+  doneButton = document.querySelector('#done');
 
   document.addEventListener('keydown', keyListener, false);
 
@@ -163,6 +235,13 @@ const init = () => {
   playingArea.addEventListener('touchstart', mouseDown, false);
   playingArea.addEventListener('touchmove', mouseMove, false);
   playingArea.addEventListener('touchend', mouseUp, false);
+
+  gearButton.addEventListener('click', showControls, false);
+  newButton.addEventListener('click', newGame, false);
+  doneButton.addEventListener('click', hideControls, false);
+  difficultySelect.addEventListener('change', () => {
+    setDifficultly(difficultySelect.selectedIndex);
+  }, false);
 
   layoutPage();
 

@@ -8,14 +8,27 @@
   <link rel="stylesheet" href="styles/rebound.css">
   <title>Rebound</title>
 </head>
-<div id="playingArea">
-  <div id="paddle"></div>
-  <div id="ball"></div>
-  <div id="score">Score: 0</div>
-</div>
+
 
 <body>
-  <script src="scripts/rebound.js"></script>
+  <div id="playingArea">
+    <div id="paddle"></div>
+    <div id="ball"></div>
+    <div id="score">Score: 0</div>
+  </div>
+  <div id="controls">
+    <h3>Settings</h3>
+    <button class="button-hover" type="button" id="new">New Game</button><br />
+    <select id="difficulty">
+      <option value="easy" selected>Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select><br />
+    <button class="button-hover" id="done" type="button">Done</button>
+  </div>
+  <button class="button-hover" id="gear" type="button">&#9881</button>
 </body>
+
+<script src="scripts/rebound.js"></script>
 
 </html>
