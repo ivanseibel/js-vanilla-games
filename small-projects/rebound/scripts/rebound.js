@@ -206,6 +206,15 @@ const setDifficultly = (difficulty) => {
   }
 }
 
+const newGame = () => {
+  ballTop = 8;
+  currentsScore = 0;
+  horizontalSpeed = 2;
+  setDifficultly(difficultySelect.selectedIndex);
+  score.style.backgroundColor = 'rgb(32,128,64)';
+  hideControls();
+}
+
 const init = () => {
   playingArea = document.querySelector('#playingArea');
   paddle = document.querySelector('#paddle');
@@ -228,7 +237,7 @@ const init = () => {
   playingArea.addEventListener('touchend', mouseUp, false);
 
   gearButton.addEventListener('click', showControls, false);
-  newButton.addEventListener('click', start, false);
+  newButton.addEventListener('click', newGame, false);
   doneButton.addEventListener('click', hideControls, false);
   difficultySelect.addEventListener('change', () => {
     setDifficultly(difficultySelect.selectedIndex);
