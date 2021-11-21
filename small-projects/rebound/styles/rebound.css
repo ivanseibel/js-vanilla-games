@@ -83,3 +83,7 @@ body {
   font-weight: 700;
   cursor: pointer;
 }
+
+fieldset {
+  margin: 10px auto;
+}
