@@ -43,11 +43,11 @@ var musicEnabled = false;
 
 function initAudio() {
   // load audio files
-  beepX = new Audio('../assets/sounds/beepX.mp3');
-  beepY = new Audio('../assets/sounds/beepY.mp3');
-  beepPaddle = new Audio('../assets/sounds/beepPaddle.mp3');
-  beepGameOver = new Audio('../assets/sounds/beepGameOver.mp3');
-  backgroundMusic = new Audio('../assets/sounds/music.mp3');
+  beepX = new Audio('assets/sounds/beepX.mp3');
+  beepY = new Audio('assets/sounds/beepY.mp3');
+  beepPaddle = new Audio('assets/sounds/beepPaddle.mp3');
+  beepGameOver = new Audio('assets/sounds/beepGameOver.mp3');
+  backgroundMusic = new Audio('assets/sounds/music.mp3');
 
   // turn off volume
   beepX.volume = 0;
@@ -71,11 +71,11 @@ function initAudio() {
   backgroundMusic.pause();
 
   // set the volume back for next time
-  beepX.volume = 1;
-  beepY.volume = 1;
-  beepPaddle.volume = 1;
-  beepGameOver.volume = 1;
-  backgroundMusic.volume = 1;
+  beepX.volume = 0.5;
+  beepY.volume = 0.5;
+  beepPaddle.volume = 0.5;
+  beepGameOver.volume = 0.5;
+  backgroundMusic.volume = 0.5;
 }
 
 const layoutPage = () => {
@@ -127,6 +127,7 @@ const render = () => {
 
 const collisionX = () => {
   if (ballLeft < 4 || ballLeft > playingAreaWidth - 20) {
+    playSound(beepX);
     return true;
   }
 
@@ -135,6 +136,7 @@ const collisionX = () => {
 
 const collisionY = () => {
   if (ballTop < 4) {
+    playSound(beepY);
     return true;
   }
 
@@ -144,18 +146,27 @@ const collisionY = () => {
         horizontalSpeed = -2;
       else
         horizontalSpeed = 2;
+
+      playSound(beepPaddle);
+
       return true;
     } else if (ballLeft >= paddleLeft && ballLeft < paddleLeft + 16) {
       if (horizontalSpeed < 0)
         horizontalSpeed = -8;
       else
         horizontalSpeed = 8;
+
+      playSound(beepPaddle);
+
       return true;
     } else if (ballLeft > paddleLeft + 48 && ballLeft <= paddleLeft + 64) {
       if (horizontalSpeed < 0)
         horizontalSpeed = -8;
       else
         horizontalSpeed = 8;
+
+      playSound(beepPaddle);
+
       return true;
     }
   }
@@ -186,6 +197,7 @@ const gameOver = () => {
   cancelAnimationFrame(timer);
   score.innerHTML = `Score: ${currentsScore}   Game Over!`;
   score.style.backgroundColor = 'rgb(128,0,0)';
+  playSound(beepGameOver);
 }
 
 const start = () => {
@@ -265,6 +277,32 @@ const newGame = () => {
   hideControls();
 }
 
+const toggleSound = () => {
+  if (!beepX)
+    initAudio();
+
+  effectsEnabled = !effectsEnabled;
+}
+
+const playSound = (soundObject) => {
+  if (effectsEnabled)
+    soundObject.play();
+}
+
+const toggleMusic = () => {
+  if (!backgroundMusic)
+    initAudio();
+
+  if (musicEnabled) {
+    backgroundMusic.pause();
+  } else {
+    backgroundMusic.loop = true;
+    backgroundMusic.play();
+  }
+
+  musicEnabled = !musicEnabled;
+}
+
 const init = () => {
   playingArea = document.querySelector('#playingArea');
   paddle = document.querySelector('#paddle');
@@ -294,6 +332,9 @@ const init = () => {
   difficultySelect.addEventListener('change', () => {
     setDifficultly(difficultySelect.selectedIndex);
   }, false);
+
+  sound.addEventListener('click', toggleSound, false);
+  music.addEventListener('click', toggleMusic, false);
 
   layoutPage();
 
