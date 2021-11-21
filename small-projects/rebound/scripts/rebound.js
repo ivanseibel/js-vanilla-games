@@ -113,7 +113,6 @@ const collisionY = () => {
   return false;
 }
 
-
 const detectCollision = () => {
   if (collisionX()) {
     horizontalSpeed *= -1;
@@ -174,6 +173,16 @@ const mouseUp = (e) => {
   isDragging = false;
 }
 
+const showControls = () => {
+  controlsScreen.style.display = 'block';
+  cancelAnimationFrame(timer);
+}
+
+const hideControls = () => {
+  controlsScreen.style.display = 'none';
+  timer = requestAnimationFrame(start);
+}
+
 const init = () => {
   playingArea = document.querySelector('#playingArea');
   paddle = document.querySelector('#paddle');
@@ -194,6 +203,13 @@ const init = () => {
   playingArea.addEventListener('touchstart', mouseDown, false);
   playingArea.addEventListener('touchmove', mouseMove, false);
   playingArea.addEventListener('touchend', mouseUp, false);
+
+  gearButton.addEventListener('click', showControls, false);
+  newButton.addEventListener('click', start, false);
+  doneButton.addEventListener('click', hideControls, false);
+  difficultySelect.addEventListener('change', () => {
+    setDifficultly(difficultySelect.selectedIndex);
+  }, false);
 
   layoutPage();
 
