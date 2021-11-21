@@ -1,8 +1,19 @@
+/*
+  Variables for DOM elements
+*/
 var playingArea;
 var paddle;
 var ball;
 var score;
+var gearButton;
+var controlsScreen;
+var newButton;
+var difficultySelect;
+var doneButton;
 
+/*
+  Variables for game states
+*/
 var availableWidth;
 var availableHeight;
 var playingAreaWidth;
@@ -15,7 +26,6 @@ var timer;
 var paddleLeft = 228;
 var ballLeft = 100;
 var ballTop = 8;
-
 var isDragging = false;
 
 const layoutPage = () => {
@@ -169,6 +179,11 @@ const init = () => {
   paddle = document.querySelector('#paddle');
   ball = document.querySelector('#ball');
   score = document.querySelector('#score');
+  gearButton = document.querySelector('#gear');
+  controlsScreen = document.querySelector('#controls');
+  newButton = document.querySelector('#new');
+  difficultySelect = document.querySelector('#difficulty');
+  doneButton = document.querySelector('#done');
 
   document.addEventListener('keydown', keyListener, false);
 
