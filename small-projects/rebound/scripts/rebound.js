@@ -183,6 +183,29 @@ const hideControls = () => {
   timer = requestAnimationFrame(start);
 }
 
+const setDifficultly = (difficulty) => {
+  switch (difficulty) {
+    case 0:
+      verticalSpeed = 2;
+      paddleSpeed = 48;
+      break;
+
+    case 1:
+      verticalSpeed = 4;
+      paddleSpeed = 32;
+      break;
+
+    case 2:
+      verticalSpeed = 6;
+      paddleSpeed = 16;
+      break;
+
+    default:
+      verticalSpeed = 2;
+      paddleSpeed = 48;
+  }
+}
+
 const init = () => {
   playingArea = document.querySelector('#playingArea');
   paddle = document.querySelector('#paddle');
